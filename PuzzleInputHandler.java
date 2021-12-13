@@ -9,7 +9,7 @@ public class PuzzleInputHandler {
         this.day = day;
     }
 
-    public String getInput() throws IOException {
+    public String getPuzzleInput() throws IOException {
         try {
             return Files.readString(Paths.get(buildPath()));
         } catch (IOException e) {
@@ -18,6 +18,6 @@ public class PuzzleInputHandler {
     }
 
     private String buildPath() {
-        return day < 10 ? "src/input/PuzzleInput0" + day + ".txt" : "src/input/PuzzleInput" + day + ".txt";
+        return day < 10 ? "src/PuzzleInput/PuzzleInput0" + day + ".txt" : "src/PuzzleInput/PuzzleInput" + day + ".txt";
     }
 }

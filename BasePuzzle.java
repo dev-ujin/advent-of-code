@@ -1,19 +1,17 @@
 import java.util.Scanner;
 
 public abstract class BasePuzzle {
-    private final String input;
+    private final String puzzleInput;
 
     BasePuzzle(String input) {
-        this.input = input;
+        this.puzzleInput = input;
     }
 
-    public String getInput() {
-        return input;
+    public String getPuzzleInput() {
+        return puzzleInput;
     }
 
     public abstract int getDay();
-
-    public abstract String getTitle();
 
     public abstract String solveFirstPart();
 
