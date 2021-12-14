@@ -4,6 +4,8 @@ import java.util.stream.Collectors;
 public class Puzzle14 extends BasePuzzle {
     private String template;
     private Map<String, Character> rules; // If input data is "SO-> F", then <"SO", 'F'>
+    private Map<Character, Long> counter;
+    private Map<String, Long> pairs;
 
     Puzzle14(String input) {
         super(input);
@@ -18,42 +20,30 @@ public class Puzzle14 extends BasePuzzle {
 
     @Override
     public String solveFirstPart() {
-        Map<String, Long> pairs = new HashMap<>();
-        Map<Character, Long> counter = new HashMap<>();
-        for (int i=0 ; i<template.length()-1 ; i++) {
-            pairs.merge(template.substring(i, i+2), 1L, Long::sum);
-            counter.merge(template.charAt(i), 1L, Long::sum);
-        }
-        counter.merge(template.charAt(template.length()-1), 1L, Long::sum);
-
-        for (int round = 0 ; round < 10; round++) {
-            Map<String, Long> newPairs = new HashMap<>();
-            pairs.forEach((key, value) -> {
-                if (rules.containsKey(key)) {
-                    char between = rules.get(key);
-                    newPairs.merge(key.charAt(0) + String.valueOf(between), value, Long::sum);
-                    newPairs.merge(String.valueOf(between) + key.charAt(1), value, Long::sum);
-                    counter.merge(between, value, Long::sum);
-                }
-            });
-            pairs = newPairs;
-        }
-        Map.Entry<Character, Long> mostCommonElement = counter.entrySet().stream().max(Map.Entry.comparingByValue()).get();
-        Map.Entry<Character, Long> leastCommonElement = counter.entrySet().stream().min(Map.Entry.comparingByValue()).get();
-        return String.valueOf(mostCommonElement.getValue() - leastCommonElement.getValue());
+        setUp();
+        doAction(10);
+        return String.valueOf(getMaxSubMin());
     }
 
     @Override
     public String solveSecondPart() {
-        Map<String, Long> pairs = new HashMap<>();
-        Map<Character, Long> counter = new HashMap<>();
+        setUp();
+        doAction(40);
+        return String.valueOf(getMaxSubMin());
+    }
+
+    private void setUp() {
+        counter = new HashMap<>();
+        pairs = new HashMap<>();
         for (int i=0 ; i<template.length()-1 ; i++) {
             pairs.merge(template.substring(i, i+2), 1L, Long::sum);
             counter.merge(template.charAt(i), 1L, Long::sum);
         }
         counter.merge(template.charAt(template.length()-1), 1L, Long::sum);
+    }
 
-        for (int round = 0 ; round < 40; round++) {
+    private void doAction(int round) {
+        for (int i = 0 ; i < round; i++) {
             Map<String, Long> newPairs = new HashMap<>();
             pairs.forEach((key, value) -> {
                 if (rules.containsKey(key)) {
@@ -65,9 +55,11 @@ public class Puzzle14 extends BasePuzzle {
             });
             pairs = newPairs;
         }
-        Map.Entry<Character, Long> mostCommonElement = counter.entrySet().stream().max(Map.Entry.comparingByValue()).get();
-        Map.Entry<Character, Long> leastCommonElement = counter.entrySet().stream().min(Map.Entry.comparingByValue()).get();
-        return String.valueOf(mostCommonElement.getValue() - leastCommonElement.getValue());
     }
 
+    private Long getMaxSubMin() {
+        Map.Entry<Character, Long> mostCommonElement = counter.entrySet().stream().max(Map.Entry.comparingByValue()).get();
+        Map.Entry<Character, Long> leastCommonElement = counter.entrySet().stream().min(Map.Entry.comparingByValue()).get();
+        return mostCommonElement.getValue() - leastCommonElement.getValue();
+    }
 }
