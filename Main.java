@@ -5,7 +5,9 @@ public class Main {
     public static void main(String[] args) throws IOException {
         List<BasePuzzle> puzzleList = List.of(
                 new Puzzle01(new PuzzleInputHandler(1).getPuzzleInput()),
-                new Puzzle02(new PuzzleInputHandler(2).getPuzzleInput())
+                new Puzzle02(new PuzzleInputHandler(2).getPuzzleInput()),
+                new Puzzle14(new PuzzleInputHandler(14).getPuzzleInput())
+
         );
         for(BasePuzzle puzzle : puzzleList) {
             if (puzzle.getDay() < 10) {
