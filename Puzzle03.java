@@ -1,0 +1,4 @@
+package PACKAGE_NAME;
+
+public class Puzzle03 {
+}
